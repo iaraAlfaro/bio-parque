@@ -3,11 +3,11 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <title>Botones Cuidador Especie</title>
+        <title>Botones Guia Itinerario</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:fragment="botonesAgregarCuidadorEspecie" class="py-4 mb-4 bg-light">
+        <section th:fragment="botonesAgregarGuiaItinerario" class="py-4 mb-4 bg-light">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-md-3" sec:authorize="hasRole ('ROLE_ADMIN')">
                         <a href="#" class="btn btn-primary btn-block"
-                           data-toggle="modal" data-target="#agregarCuidadorEspecie">
+                           data-toggle="modal" data-target="#agregarGuiaItinerario">
                             <i class="fas fa-plus"></i>[[#{accion.agregar}]]
                         </a>
                     </div>

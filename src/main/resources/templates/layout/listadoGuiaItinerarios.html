@@ -25,8 +25,6 @@
                                             <th th:text="#{guia.max-visitantes}">Max Visitantes</th>
                                             <th th:text="#{guia.num-especies}">Num Especies</th>
                                             <th th:text="#{guia.horario}">Horario</th>
-                                            <th></th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -37,19 +35,6 @@
                                             <td>[[${guiaItinerario.itinerario.maxVisitantes}]]</td>
                                             <td>[[${guiaItinerario.itinerario.numEspecies}]]</td>
                                             <td>[[${guiaItinerario.itinerario.horario}]]</td>
-                                              
-                                            <td>
-                                                <a th:href="@{/editarGuiaItinerario/} + ${guiaItinerario.idGuiaItinerario}"
-                                                   class="btn btn-secondary">
-                                                    <i class="fas fa-angle-double-right"></i> [[#{accion.editar}]]
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a th:href="@{/eliminarGuiaItinerario(idGuiaItinerario=${guiaItinerario.idGuiaItinerario})}"
-                                                   class="btn btn-dark">
-                                                    <i class="fas fa-angle-double-right"></i> [[#{accion.eliminar}]]
-                                                </a>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

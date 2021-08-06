@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/plantilla :: head">
+        <title>Datos de las especies</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="layout/plantilla :: header"></header>
+        <form th:action="@{/adminGuiaItinerarioEditado}" th:object="${guiaItinerario}"
+              method="POST" class="was-validated">
+            <input type="hidden" name="idGuiaItinerario" th:field="*{idGuiaItinerario}"/>
+            <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
+            <input type="hidden" name="itinerario.idItinerario" th:field="*{itinerario.idItinerario}"/>
+            <section th:replace="layout/botonesEditar :: botonesEditar"></section>
+            <div id="details">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-header">
+                                <h4>[[#{accion.editar}]]</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="idItinerario">[[#{itinerario.idItinerario}]]</label>
+                                    <input type="text" class="form-control" name="idItinerario" 
+                                           required="true" th:field="*{itinerario.idItinerario}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="duracion">[[#{itinerario.duracion}]]</label>
+                                    <input type="text" class="form-control" name="duracion" 
+                                           required="true" th:field="*{itinerario.duracion}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitud">[[#{itinerario.longitud}]]</label>
+                                    <input type="text" class="form-control" name="longitud" 
+                                           required="true" th:field="*{itinerario.longitud}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxVisitantes">[[#{itinerario.max-visitantes}]]</label>
+                                    <input type="text" class="form-control" name="maxVisitantes" 
+                                           required="true" th:field="*{itinerario.maxVisitantes}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numEspecies">[[#{itinerario.num-especies}]]</label>
+                                    <input type="text" class="form-control" name="numEspecies" 
+                                           required="true" th:field="*{itinerario.numEspecies}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="horario">[[#{itinerario.horario}]]</label>
+                                    <input type="text" class="form-control" name="horario" 
+                                           required="true" th:field="*{itinerario.horario}"/>
+                                </div>
+                                <h3>Zonas:</h3>
+                                <div th:each="zona : ${zonas}">
+                                    <input th:field="*{itinerario.zonas}" type="checkbox"
+                                           th:value="${zona.idZona}"/>
+                                    <span th:text="${zona.nombre}">Zona</span><br/>
+                                </div>
+                            </div>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+        </form>
+        <footer th:replace="layout/plantilla :: footer"></footer>
+    </body>
+</html>

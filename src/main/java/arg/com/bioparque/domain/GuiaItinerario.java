@@ -17,10 +17,10 @@ public class GuiaItinerario implements Serializable{
     private Long idGuiaItinerario;
     
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Persona persona;
     
     @JoinColumn(name = "id_itinerario", referencedColumnName = "id_itinerario")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Itinerario itinerario;
 }

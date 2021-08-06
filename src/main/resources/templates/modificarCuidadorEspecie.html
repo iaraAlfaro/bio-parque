@@ -8,7 +8,41 @@
     </head>
     <body>
         <header th:replace="layout/plantilla :: header"></header>
-        <section th:replace="layout/editarCuidadorEspecie :: editarCuidadorEspecie"></section>
+        <form th:action="@{/adminCuidadorEspecieEditado}" th:object="${cuidadorEspecie}"
+              method="POST" class="was-validated">
+            <input type="hidden" name="idCuidadorEspecie" th:field="*{idCuidadorEspecie}"/>
+            <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
+            <input type="hidden" name="especie.idEspecie" th:field="*{especie.idEspecie}"/>
+            <section th:replace="layout/botonesEditar :: botonesEditar"></section>
+            <div id="details">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-header">
+                                <h4>[[#{accion.editar}]]</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="nombre">[[#{especie.nombre}]]</label>
+                                    <input type="text" class="form-control" name="nombre" 
+                                           required="true" th:field="*{especie.nombre}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombreCientiifico">[[#{especie.nombre-cientifico}]]</label>
+                                    <input type="text" class="form-control" name="nombreCientifico" 
+                                           required="true" th:field="*{especie.nombreCientifico}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion">[[#{especie.descripcion}]]</label>
+                                    <input type="text" class="form-control" name="descripcion" 
+                                           required="true" th:field="*{especie.descripcion}"/>
+                                </div>
+                            </div>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+        </form>
         <footer th:replace="layout/plantilla :: footer"></footer>
     </body>
 </html>

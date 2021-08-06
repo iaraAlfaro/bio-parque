@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <section sec:authorize="hasRole('ROLE_ADMIN')" th:fragment="agregarGuiaItinerario">
+            <div id="agregarGuiaItinerario" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title" th:text="#{accion.agregar}">Agregar guiaItinerario</h5>
+                            <button class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <form th:action="@{/guardarGuiaItinerario}" th:object="${guiaItinerario}"
+                              method="POST" class="was-validated">
+                            <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="duracion" th:text="#{itinerario.duracion}">Duración</label>
+                                    <input type="text" class="form-control" name="itinerario.duracion" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitud" th:text="#{itinerario.longitud}">Longitud</label>
+                                    <input type="text" class="form-control" name="itinerario.longitud" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxVisitantes" th:text="#{itinerario.max-visitantes}">Max Visitantes</label>
+                                    <input type="text" class="form-control" name="itinerario.maxVisitantes" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="numEspecies" th:text="#{itinerario.num-especies}">Num Especies</label>
+                                    <input type="text" class="form-control" name="itinerario.numEspecies" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="horario" th:text="#{itinerario.horario}">Horario</label>
+                                    <input type="text" class="form-control" name="itinerario.horario" required="true">
+                                </div>
+                                <h3>Zonas:</h3>
+                                <div th:each="zona : ${zonas}">
+                                    <input th:field="*{itinerario.zonas}" type="checkbox"
+                                           th:value="${zona.idZona}"/>
+                                    <span th:text="${zona.nombre}">Zona</span><br/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn  btn-primary" type="submit" th:text="#{accion.guardar}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>                
+            </div>
+        </section>
+    </body>
+</html>

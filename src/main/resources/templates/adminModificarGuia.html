@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/plantilla :: head">
+        <title>Datos de las especies</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="layout/plantilla :: header"></header>
+        <section th:replace="layout/agregarGuiaItinerario :: agregarGuiaItinerario"></section>
+        <section th:replace="layout/botonesAgregarGuiaItinerario :: botonesAgregarGuiaItinerario"></section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Listado Itinerarios [[${persona.nombre}]]</h4>
+                        </div>
+                        <div th:if="${guiaItinerarios != null and !guiaItinerarios.empty}">
+                            <table class="table table-stryped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th th:text="#{itinerario.idItinerario}">Id Itinerario</th>
+                                        <th th:text="#{itinerario.duracion}">Duración</th>
+                                        <th th:text="#{itinerario.longitud}">Longitud</th>
+                                        <th th:text="#{itinerario.max-visitantes}">Máximo Visitantes</th>
+                                        <th th:text="#{itinerario.num-especies}">Num Especies</th>
+                                        <th th:text="#{itinerario.horario}">Horario</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="guiaItinerario, contador : ${guiaItinerarios}">
+                                        <td>[[${contador.count}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.idItinerario}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.duracion}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.longitud}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.maxVisitantes}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.numEspecies}]]</td>
+                                        <td>[[${guiaItinerario.itinerario.horario}]]</td>
+                                        <td>
+                                            <a th:href="@{/editarGuiaItinerario/} + ${guiaItinerario.idGuiaItinerario}"
+                                               class="btn btn-secondary">
+                                                <i class="fas fa-angle-double-right"></i> [[#{accion.editar}]]
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/eliminarGuiaItinerario(idGuiaItinerario=${guiaItinerario.idGuiaItinerario})}"
+                                               class="btn btn-dark">
+                                                <i class="fas fa-angle-double-right"></i> [[#{accion.eliminar}]]
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center p-2" th:if="${guiaItinerarios == null or guiaItinerarios.empty}">
+                            <span th:text="#{objeto.lista-vacia}">Lista vacia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-center bg-success text-white mb-3">
+                        <div class="card-body">
+                            <h4 class="display-4"><a  class="text-white" th:href="@{/agregarGuiaItinerario/} + ${persona.idPersona}">
+                                    Agregar itinerario
+                                </a></h4>
+                            <h4 class="display-4">
+                                <i class="fas fa-feather"></i>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="layout/plantilla :: footer"></footer>
+    </body>
+</html>

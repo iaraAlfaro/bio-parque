@@ -7,7 +7,7 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:fragment="botonesEditarCuidadorEspecie">
+        <section th:fragment="botonesEditar">
             <div id="actions" class="py-4 mb-4 bg-light">
                 <div class="container">
                     <div class="row">
@@ -20,12 +20,6 @@
                             <button type="submit" class="btn btn-success btn-block">
                                 <i class="fas fa-check"></i> [[#{accion.guardar}]]
                             </button>
-                        </div>
-                        <div class="col-md-3">
-                            <a th:href="@{/eliminar(idCuidadorEspecie=${cuidadorEspecie.idCuidadorEspecie})}"
-                               class="btn btn-danger btn-block">
-                                <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
-                            </a>
                         </div>
                     </div>
                 </div>

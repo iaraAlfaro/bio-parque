@@ -37,5 +37,6 @@ public class Persona implements Serializable{
     @OneToMany(mappedBy = "persona")
     private List<CuidadorEspecie> cuidadorEspecies;
     
-    
+    @OneToMany(mappedBy = "persona")
+    private List<GuiaItinerario> guiaItinerario;
 }
