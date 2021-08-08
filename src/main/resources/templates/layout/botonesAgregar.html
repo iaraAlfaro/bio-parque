@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>Botones Persona</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <section th:fragment="botonesAgregar" class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3" sec:authorize="hasRole ('ROLE_ADMIN')">
+                        <a href="#" class="btn btn-primary btn-block"
+                            data-toggle="modal" data-target="#agregarPersona">
+                            <i class="fas fa-plus"></i>[[#{accion.agregar-usuario}]]
+                        </a>
+                    </div>
+                    <div class="col-md-3" sec:authorize="hasRole ('ROLE_ADMIN')">
+                        <a href="#" class="btn btn-primary btn-block"
+                            data-toggle="modal" data-target="#agregarEspecie">
+                            <i class="fas fa-plus"></i>[[#{accion.agregar-especie}]]
+                        </a>
+                    </div>
+                    <div class="col-md-3" sec:authorize="hasRole ('ROLE_ADMIN')">
+                        <a href="#" class="btn btn-primary btn-block"
+                            data-toggle="modal" data-target="#agregarItinerario">
+                            <i class="fas fa-plus"></i>[[#{accion.agregar-itinerario}]]
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

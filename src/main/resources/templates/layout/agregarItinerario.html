@@ -7,18 +7,47 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <div id="agregarItinerario" class="modal fade">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" th:text="#{accion.agregar}">Agregar Itinerario</h5>
-                        <button class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
+        <section sec:authorize="hasRole('ROLE_ADMIN')" th:fragment="agregarItinerario">
+            <div id="agregarItinerario" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info text-white">
+                            <h5 class="modal-title" th:text="#{accion.agregar}">Agregar Itinerario</h5>
+                            <button class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <form th:action="@{/guardarItinerario}" th:object="${itinerario}"
+                              method="POST" class="was-validated">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="duracion" th:text="#{itinerario.duracion}">Nombre</label>
+                                    <input type="text" class="form-control" name="duracion" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitud" th:text="#{itinerario.longitud}">Direccion</label>
+                                    <input type="text" class="form-control" name="longitud" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxVisitantes" th:text="#{itinerario.max-visitantes}">Telefono</label>
+                                    <input type="text" class="form-control" name="maxVisitantes" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="numEspecies" th:text="#{itinerario.num-especies}">Fecha Ingreso</label>
+                                    <input type="text" class="form-control" name="numEspecies" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label for="horario" th:text="#{itinerario.horario}">User</label>
+                                    <input type="text" class="form-control" name="horario" required="true">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn  btn-primary" type="submit" th:text="#{accion.guardar}"></button>
+                            </div>
+                        </form>
                     </div>
-                    
-                </div>
-            </div>                
-        </div>
+                </div>                
+            </div>
+        </section>
     </body>
 </html>

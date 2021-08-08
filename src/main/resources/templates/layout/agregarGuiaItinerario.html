@@ -9,7 +9,7 @@
     <body>
         <section sec:authorize="hasRole('ROLE_ADMIN')" th:fragment="agregarGuiaItinerario">
             <div id="agregarGuiaItinerario" class="modal fade">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-info text-white">
                             <h5 class="modal-title" th:text="#{accion.agregar}">Agregar guiaItinerario</h5>
@@ -21,7 +21,7 @@
                               method="POST" class="was-validated">
                             <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
                             <div class="modal-body">
-                                <div class="form-group">
+                                <!--div class="form-group">
                                     <label for="duracion" th:text="#{itinerario.duracion}">Duración</label>
                                     <input type="text" class="form-control" name="itinerario.duracion" required="true">
                                 </div>
@@ -46,7 +46,14 @@
                                     <input th:field="*{itinerario.zonas}" type="checkbox"
                                            th:value="${zona.idZona}"/>
                                     <span th:text="${zona.nombre}">Zona</span><br/>
-                                </div>
+                                </div-->
+                                <label for="itinerarios" th:text="#{itinerarios}">Itinerarios: </label>
+                                <select th:field="*{itinerario}">
+                                    <option value=""> -Seleccionar- </option>
+                                    <option th:each="itinerario : ${itinerarios}"
+                                            th:value="${itinerario.idItinerario}"
+                                            th:utext="${itinerario.idItinerario}"/>
+                                </select>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn  btn-primary" type="submit" th:text="#{accion.guardar}"></button>

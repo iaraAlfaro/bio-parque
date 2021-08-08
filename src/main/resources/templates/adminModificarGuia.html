@@ -12,7 +12,7 @@
         <section th:replace="layout/botonesAgregarGuiaItinerario :: botonesAgregarGuiaItinerario"></section>
         <div class="container">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4>Listado Itinerarios [[${persona.nombre}]]</h4>
@@ -28,6 +28,7 @@
                                         <th th:text="#{itinerario.max-visitantes}">Máximo Visitantes</th>
                                         <th th:text="#{itinerario.num-especies}">Num Especies</th>
                                         <th th:text="#{itinerario.horario}">Horario</th>
+                                        <th th:text="#{itinerario.zonas}">Zonas</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -41,6 +42,14 @@
                                         <td>[[${guiaItinerario.itinerario.maxVisitantes}]]</td>
                                         <td>[[${guiaItinerario.itinerario.numEspecies}]]</td>
                                         <td>[[${guiaItinerario.itinerario.horario}]]</td>
+                                        <td th:if="${guiaItinerario.itinerario.itinerarioZonas != null and !guiaItinerario.itinerario.itinerarioZonas.empty}">
+                                            <select>
+                                                <option th:each="itinerarioZona : ${guiaItinerario.itinerario.itinerarioZonas}"
+                                                        th:utext="${itinerarioZona.zona.nombre}"/>
+                                            </select>
+                                        </td>
+                                        <td th:if="${guiaItinerario.itinerario.itinerarioZonas == null or guiaItinerario.itinerario.itinerarioZonas.empty}">
+                                        </td>
                                         <td>
                                             <a th:href="@{/editarGuiaItinerario/} + ${guiaItinerario.idGuiaItinerario}"
                                                class="btn btn-secondary">
@@ -60,18 +69,6 @@
                         </div>
                         <div class="text-center p-2" th:if="${guiaItinerarios == null or guiaItinerarios.empty}">
                             <span th:text="#{objeto.lista-vacia}">Lista vacia</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center bg-success text-white mb-3">
-                        <div class="card-body">
-                            <h4 class="display-4"><a  class="text-white" th:href="@{/agregarGuiaItinerario/} + ${persona.idPersona}">
-                                    Agregar itinerario
-                                </a></h4>
-                            <h4 class="display-4">
-                                <i class="fas fa-feather"></i>
-                            </h4>
                         </div>
                     </div>
                 </div>

@@ -25,6 +25,7 @@
                                             <th th:text="#{guia.max-visitantes}">Max Visitantes</th>
                                             <th th:text="#{guia.num-especies}">Num Especies</th>
                                             <th th:text="#{guia.horario}">Horario</th>
+                                            <th th:text="#{guia.zonas}">Zonas</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,6 +36,14 @@
                                             <td>[[${guiaItinerario.itinerario.maxVisitantes}]]</td>
                                             <td>[[${guiaItinerario.itinerario.numEspecies}]]</td>
                                             <td>[[${guiaItinerario.itinerario.horario}]]</td>
+                                            <td th:if="${guiaItinerario.itinerario.itinerarioZonas != null and !guiaItinerario.itinerario.itinerarioZonas.empty}">
+                                                <select>
+                                                    <option th:each="itinerarioZona : ${guiaItinerario.itinerario.itinerarioZonas}"
+                                                            th:utext="${itinerarioZona.zona.nombre}"/>
+                                                </select>
+                                            </td>
+                                            <td th:if="${guiaItinerario.itinerario.itinerarioZonas == null or guiaItinerario.itinerario.itinerarioZonas.empty}">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

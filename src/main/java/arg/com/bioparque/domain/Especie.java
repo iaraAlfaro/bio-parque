@@ -26,4 +26,7 @@ public class Especie implements Serializable{
     
     @OneToMany(mappedBy = "especie")
     private List<CuidadorEspecie> cuidadorEspecies;
+    
+    @OneToMany(mappedBy = "especie")
+    private List<EspecieHabitat> especieHabitats;
 }

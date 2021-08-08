@@ -63,7 +63,7 @@ public class ControladorInicio {
         List<Persona> personas = personaRepository.findAll();
         model.addAttribute("personas", personas);
 
-        List<CuidadorEspecie> cuidadorEspecies = cuidadorEspecieRepository.findAll();
+        List<CuidadorEspecie> cuidadorEspecies = cuidadorEspecieRepository.findByPersona(persona);
         model.addAttribute("cuidadorEspecies", cuidadorEspecies);
 
         List<Especie> especies = especieRepository.findAll();
@@ -106,9 +106,9 @@ public class ControladorInicio {
             System.out.println(errores.getAllErrors());
             return "adminModificarCuidadorEspecie";
         }
-        Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
+        //Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
         Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
-        cuidadorEspecie.setEspecie(especie);
+        //cuidadorEspecie.setEspecie(especie);
         cuidadorEspecie.setPersona(persona);
         cuidadorEspecieRepository.save(cuidadorEspecie);
         return "redirect:/";
@@ -166,6 +166,8 @@ public class ControladorInicio {
             model.addAttribute("guiaItinerario", guiaItinerario);
             List<Zona> zonas = zonaRepository.findAll();
             model.addAttribute("zonas", zonas);
+            List<Itinerario> itinerarios = itinerarioRepository.findAll();
+            model.addAttribute("itinerarios", itinerarios);
             return "adminModificarGuia";
         }
         return "redirect:/";
@@ -204,7 +206,7 @@ public class ControladorInicio {
             return "adminModificarGuia";
         }
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
-        Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
+        //Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
         guiaItinerario.setPersona(persona);
         guiaItinerarioRepository.save(guiaItinerario);
         return "redirect:/";
@@ -253,40 +255,48 @@ public class ControladorInicio {
         }
 
         
-        List<Zona> zonas = new ArrayList<>();
+        /*List<Zona> zonas = new ArrayList<>();
         for(Zona zona : guiaItinerario.getItinerario().getZonas()){
             zonas.add(zona);
         }
-        
         guiaItinerario.getItinerario().getZonas().clear();
-        Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
+        
+        Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());*/
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
 
-        for (Zona zona : zonas) {
+        /*for (Zona zona : zonas) {
             ItinerarioZona itinerarioZona = new ItinerarioZona();
             itinerarioZona.setItinerario(itinerario);
             itinerarioZona.setZona(zona);
             itinerarioZonaRepository.save(itinerarioZona);
         }
 
-        guiaItinerario.setItinerario(itinerario);
+        guiaItinerario.setItinerario(itinerario);*/
         guiaItinerario.setPersona(persona);
 
         guiaItinerarioRepository.save(guiaItinerario);
         return "redirect:/";
     }
 
-    @GetMapping("/agregarGuiaItinerario/{idPersona}")
-    public String agregarGuiaItinerario(
-            @Valid Persona persona,
-            Model model,
-            Errors errores) {
-        persona = personaRepository.findById(persona.getIdPersona()).orElse(null);
-        GuiaItinerario guiItinerario = new GuiaItinerario();
-        guiItinerario.setPersona(persona);
-        model.addAttribute("guiaItinerario", guiItinerario);
-        List<Zona> zonas = zonaRepository.findAll();
-        model.addAttribute("zonas", zonas);
-        return "agregarGuiaItinerarioPrueba";
+    
+    
+    @PostMapping("/guardarEspecie")
+    public String guardarEspecie(@Valid Especie especie, Errors errores) {
+        if (errores.hasErrors()) {
+            System.out.println(errores.getAllErrors());
+            return "listadoPersonas";
+        }
+        especieRepository.save(especie);
+        return "redirect:/";
+    }
+    
+    @PostMapping("/guardarItinerario")
+    public String guardarItinerario(@Valid Itinerario itinerario, Errors errores) {
+        if (errores.hasErrors()) {
+            System.out.println(errores.getAllErrors());
+            return "listadoPersonas";
+        }
+        itinerarioRepository.save(itinerario);
+        return "redirect:/";
     }
 }
