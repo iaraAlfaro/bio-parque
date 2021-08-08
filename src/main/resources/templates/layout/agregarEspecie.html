@@ -32,6 +32,12 @@
                                     <label for="descripcion" th:text="#{especie.descripcion}">Telefono</label>
                                     <input type="text" class="form-control" name="descripcion" required="true">
                                 </div>
+                                <h3>Habitats: </h3>
+                                <div th:each="habitat : ${habitats}">
+                                    <input th:field="*{habitats}" type="checkbox"
+                                           th:value="${habitat.idHabitat}"/>
+                                    <span th:text="${habitat.nombre}">Zona</span><br/>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn  btn-primary" type="submit" th:text="#{accion.guardar}"></button>

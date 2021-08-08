@@ -40,6 +40,12 @@
                                     <label for="horario" th:text="#{itinerario.horario}">User</label>
                                     <input type="text" class="form-control" name="horario" required="true">
                                 </div>
+                                <h3>Zonas:</h3>
+                                <div th:each="zona : ${zonas}">
+                                    <input th:field="*{zonas}" type="checkbox"
+                                           th:value="${zona.idZona}"/>
+                                    <span th:text="${zona.nombre}">Zona</span><br/>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button class="btn  btn-primary" type="submit" th:text="#{accion.guardar}"></button>

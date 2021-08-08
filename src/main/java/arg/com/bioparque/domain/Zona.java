@@ -29,7 +29,7 @@ public class Zona implements Serializable{
     private String extension;
     
     @OneToMany(mappedBy = "zona")
-    private List<ItinerarioZona> ItinerarioZonas;
+    private List<ItinerarioZona> itinerarioZonas;
 //    @ManyToOne
 //    @JoinColumn(name="id_itinerario", referencedColumnName="id_itinerario")
 //    private Itinerario itinerario;

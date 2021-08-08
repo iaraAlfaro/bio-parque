@@ -3,6 +3,7 @@ package arg.com.bioparque.web;
 import arg.com.bioparque.data.CuidadorEspecieRepository;
 import arg.com.bioparque.data.EspecieRepository;
 import arg.com.bioparque.data.GuiaItinerarioRepository;
+import arg.com.bioparque.data.HabitatRepository;
 import arg.com.bioparque.data.ItinerarioRepository;
 import arg.com.bioparque.data.ItinerarioZonaRepository;
 import arg.com.bioparque.data.PersonaRepository;
@@ -10,6 +11,7 @@ import arg.com.bioparque.data.ZonaRepository;
 import arg.com.bioparque.domain.CuidadorEspecie;
 import arg.com.bioparque.domain.Especie;
 import arg.com.bioparque.domain.GuiaItinerario;
+import arg.com.bioparque.domain.Habitat;
 import arg.com.bioparque.domain.Itinerario;
 import arg.com.bioparque.domain.ItinerarioZona;
 import arg.com.bioparque.domain.Persona;
@@ -51,6 +53,9 @@ public class ControladorInicio {
 
     @Autowired
     private ItinerarioZonaRepository itinerarioZonaRepository;
+    
+    @Autowired
+    private HabitatRepository habitatRepository;
 
     @GetMapping("/")
     public String inicio(Model model, @AuthenticationPrincipal User user) {
@@ -72,6 +77,17 @@ public class ControladorInicio {
         List<GuiaItinerario> guiaItinerarios = guiaItinerarioRepository.findByPersona(persona);
         model.addAttribute("guiaItinerarios", guiaItinerarios);
 
+        List<Zona> zonas = zonaRepository.findAll();
+        model.addAttribute("zonas", zonas);
+        
+        Itinerario itinerario = new Itinerario();
+        model.addAttribute("itinerario", itinerario);
+        
+        List<Habitat> habitats = habitatRepository.findAll();
+        model.addAttribute("habitats", habitats);
+        
+        Especie especie = new Especie();
+        model.addAttribute("especie", especie);
         return "index";
     }
 
@@ -296,7 +312,19 @@ public class ControladorInicio {
             System.out.println(errores.getAllErrors());
             return "listadoPersonas";
         }
+        List<Zona> zonas = new ArrayList<>();
+        for(Zona zona : itinerario.getZonas()){
+            zonas.add(zona);
+        }
+        itinerario.getZonas().clear();
         itinerarioRepository.save(itinerario);
+        
+        for (Zona zona : zonas) {
+            ItinerarioZona itinerarioZona = new ItinerarioZona();
+            itinerarioZona.setItinerario(itinerario);
+            itinerarioZona.setZona(zona);
+            itinerarioZonaRepository.save(itinerarioZona);
+        }
         return "redirect:/";
     }
 }

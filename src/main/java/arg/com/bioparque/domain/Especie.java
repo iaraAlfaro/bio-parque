@@ -29,4 +29,8 @@ public class Especie implements Serializable{
     
     @OneToMany(mappedBy = "especie")
     private List<EspecieHabitat> especieHabitats;
+    
+    @OneToMany(targetEntity = Habitat.class, cascade = CascadeType.ALL)
+    @JoinColumn(name="id_especie", referencedColumnName="id_especie")
+    private List<Habitat> habitats;
 }
