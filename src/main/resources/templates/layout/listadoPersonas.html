@@ -50,11 +50,13 @@
                                                     <i class="fas fa-angle-double-right"></i> [[#{accion.eliminar}]]
                                                 </a>
                                             </td>
-                                            <td>
+                                            <td th:if="${persona.rol != 'administrador'}">
                                                 <a th:href="@{/verPersona(idPersona=${persona.idPersona})}"
                                                    class="btn btn-dark">
                                                     <i class="fas fa-angle-double-right"></i> Ver
                                                 </a>
+                                            </td>
+                                            <td th:if="${persona.rol == 'administrador'}">
                                             </td>
                                         </tr>
                                     </tbody>
