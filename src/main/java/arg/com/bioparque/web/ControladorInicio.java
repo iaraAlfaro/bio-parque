@@ -1,6 +1,7 @@
 package arg.com.bioparque.web;
 
 import arg.com.bioparque.data.CuidadorEspecieRepository;
+import arg.com.bioparque.data.EspecieHabitatRepository;
 import arg.com.bioparque.data.EspecieRepository;
 import arg.com.bioparque.data.GuiaItinerarioRepository;
 import arg.com.bioparque.data.HabitatRepository;
@@ -10,6 +11,7 @@ import arg.com.bioparque.data.PersonaRepository;
 import arg.com.bioparque.data.ZonaRepository;
 import arg.com.bioparque.domain.CuidadorEspecie;
 import arg.com.bioparque.domain.Especie;
+import arg.com.bioparque.domain.EspecieHabitat;
 import arg.com.bioparque.domain.GuiaItinerario;
 import arg.com.bioparque.domain.Habitat;
 import arg.com.bioparque.domain.Itinerario;
@@ -53,15 +55,18 @@ public class ControladorInicio {
 
     @Autowired
     private ItinerarioZonaRepository itinerarioZonaRepository;
-    
+
     @Autowired
     private HabitatRepository habitatRepository;
+
+    @Autowired
+    private EspecieHabitatRepository especieHabitatRepository;
 
     @GetMapping("/")
     public String inicio(Model model, @AuthenticationPrincipal User user) {
         log.info("- Ejecutando el controlador String MVC");
         log.info("- Usuario que hizo login: " + user);
-        
+
         Persona persona = personaRepository.findByUserName(user.getUsername());
         model.addAttribute("persona", persona);
 
@@ -79,13 +84,13 @@ public class ControladorInicio {
 
         List<Zona> zonas = zonaRepository.findAll();
         model.addAttribute("zonas", zonas);
-        
+
         Itinerario itinerario = new Itinerario();
         model.addAttribute("itinerario", itinerario);
-        
+
         List<Habitat> habitats = habitatRepository.findAll();
         model.addAttribute("habitats", habitats);
-        
+
         Especie especie = new Especie();
         model.addAttribute("especie", especie);
         return "index";
@@ -101,6 +106,8 @@ public class ControladorInicio {
     public String editarCuidadorEspecie(CuidadorEspecie cuidadorEspecie, Model model) {
         cuidadorEspecie = cuidadorEspecieRepository.findById(cuidadorEspecie.getIdCuidadorEspecie()).orElse(null);
         model.addAttribute("cuidadorEspecie", cuidadorEspecie);
+        List<Habitat> habitats = habitatRepository.findAll();
+        model.addAttribute("habitats", habitats);
         return "modificarCuidadorEspecie";
     }
 
@@ -137,12 +144,31 @@ public class ControladorInicio {
         if (errores.hasErrors()) {
             return "adminModificarCuidadorEspecie";
         }
-        System.out.println(cuidadorEspecie);
-        Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
-        especieRepository.save(cuidadorEspecie.getEspecie());
-        cuidadorEspecie.setPersona(persona);
-        cuidadorEspecieRepository.save(cuidadorEspecie);
+        
+        
+        
+        List<Habitat> habitats = new ArrayList<>();
+        for (Habitat habitat : cuidadorEspecie.getEspecie().getHabitats()) {
+            habitats.add(habitat);
+        }
+        cuidadorEspecie.getEspecie().getHabitats().clear();
 
+        Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
+        Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
+        cuidadorEspecie.setPersona(persona);
+//     
+        if (habitats != null || !habitats.isEmpty()) {
+            List<EspecieHabitat> especieHabitats = especieHabitatRepository.findAllByEspecie(especie);
+            especieHabitatRepository.deleteAll(especieHabitats);
+            for (Habitat habitat : habitats) {
+                EspecieHabitat especieHabitat = new EspecieHabitat();
+                especieHabitat.setEspecie(especie);
+                especieHabitat.setHabitat(habitat);
+                especieHabitatRepository.save(especieHabitat);
+            }
+        }
+
+        cuidadorEspecieRepository.save(cuidadorEspecie);
         return "redirect:/";
     }
 
@@ -236,11 +262,11 @@ public class ControladorInicio {
             return "adminModificarGuia";
         }
         List<Zona> zonas = new ArrayList<>();
-        for(Zona zona : guiaItinerario.getItinerario().getZonas()){
+        for (Zona zona : guiaItinerario.getItinerario().getZonas()) {
             zonas.add(zona);
         }
         guiaItinerario.getItinerario().getZonas().clear();
-        
+
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
         Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
         guiaItinerario.setPersona(persona);
@@ -270,7 +296,6 @@ public class ControladorInicio {
             return "adminModificarCuidadorEspecie";
         }
 
-        
         /*List<Zona> zonas = new ArrayList<>();
         for(Zona zona : guiaItinerario.getItinerario().getZonas()){
             zonas.add(zona);
@@ -294,18 +319,29 @@ public class ControladorInicio {
         return "redirect:/";
     }
 
-    
-    
     @PostMapping("/guardarEspecie")
     public String guardarEspecie(@Valid Especie especie, Errors errores) {
         if (errores.hasErrors()) {
             System.out.println(errores.getAllErrors());
             return "listadoPersonas";
         }
+        List<Habitat> habitats = new ArrayList<>();
+        for (Habitat habitat : especie.getHabitats()) {
+            habitats.add(habitat);
+        }
+        especie.getHabitats().clear();
+
         especieRepository.save(especie);
+
+        for (Habitat habitat : habitats) {
+            EspecieHabitat especieHabitat = new EspecieHabitat();
+            especieHabitat.setEspecie(especie);
+            especieHabitat.setHabitat(habitat);
+            especieHabitatRepository.save(especieHabitat);
+        }
         return "redirect:/";
     }
-    
+
     @PostMapping("/guardarItinerario")
     public String guardarItinerario(@Valid Itinerario itinerario, Errors errores) {
         if (errores.hasErrors()) {
@@ -313,12 +349,12 @@ public class ControladorInicio {
             return "listadoPersonas";
         }
         List<Zona> zonas = new ArrayList<>();
-        for(Zona zona : itinerario.getZonas()){
+        for (Zona zona : itinerario.getZonas()) {
             zonas.add(zona);
         }
         itinerario.getZonas().clear();
         itinerarioRepository.save(itinerario);
-        
+
         for (Zona zona : zonas) {
             ItinerarioZona itinerarioZona = new ItinerarioZona();
             itinerarioZona.setItinerario(itinerario);

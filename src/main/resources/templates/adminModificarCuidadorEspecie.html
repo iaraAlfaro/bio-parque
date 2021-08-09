@@ -25,6 +25,7 @@
                                             <th th:text="#{especie.nombre}">Nombre</th>
                                             <th th:text="#{especie.nombre-cientifico}">Nombre Científico</th>
                                             <th th:text="#{especie.descripcion}">Descripcion</th>
+                                            <th th:text="#{especie.habitats}">Habitats</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -35,6 +36,14 @@
                                             <td>[[${cuidadorEspecie.especie.nombre}]]</td>
                                             <td>[[${cuidadorEspecie.especie.nombreCientifico}]]</td>
                                             <td>[[${cuidadorEspecie.especie.descripcion}]]</td>
+                                            <td th:if="${cuidadorEspecie.especie.especieHabitats != null and !cuidadorEspecie.especie.especieHabitats.empty}">
+                                                <select>
+                                                    <option th:each="especieHabitat : ${cuidadorEspecie.especie.especieHabitats}"
+                                                            th:utext="${especieHabitat.habitat.nombre}"/>
+                                                </select>
+                                            </td>
+                                            <td th:if="${cuidadorEspecie.especie.especieHabitats == null or cuidadorEspecie.especie.especieHabitats.empty}">
+                                            </td>
                                             <td>
                                                 <a th:href="@{/editarCuidadorEspecie/} + ${cuidadorEspecie.idCuidadorEspecie}"
                                                    class="btn btn-secondary">

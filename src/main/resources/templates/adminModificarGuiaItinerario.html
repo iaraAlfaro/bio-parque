@@ -52,7 +52,7 @@
                                     <input type="text" class="form-control" name="horario" 
                                            required="true" th:field="*{itinerario.horario}"/>
                                 </div>
-                                <h3>Zonas:</h3>
+                                <h3>Zonas: </h3>
                                 <div th:each="zona : ${zonas}">
                                     <input th:field="*{itinerario.zonas}" type="checkbox"
                                            th:value="${zona.idZona}"/>
