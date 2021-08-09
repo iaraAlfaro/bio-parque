@@ -10,7 +10,6 @@
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
         <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{js/main.js}" src="../static/js/main.js"></script>
     </head>
     <body>
         <header th:fragment="header">
@@ -57,8 +56,7 @@
                 </div>
             </section> 
         </header>
-
-        <footer th:fragment="footer" class="bg-warning text-white mt-5 p-5">
+        <footer th:fragment="footer" class="bg-dark text-white mt-5 p-5">
             <div class="container">
                 <div class="col">
                     <p class="lead text-center">
@@ -69,6 +67,5 @@
                 </div>
             </div>
         </footer>
-
     </body>
 </html>

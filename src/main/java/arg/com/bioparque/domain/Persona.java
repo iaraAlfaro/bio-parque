@@ -34,6 +34,8 @@ public class Persona implements Serializable{
     
     private String rol;
     
+    private String password;
+    
     @OneToMany(mappedBy = "persona")
     private List<CuidadorEspecie> cuidadorEspecies;
     

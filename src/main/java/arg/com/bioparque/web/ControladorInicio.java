@@ -8,6 +8,8 @@ import arg.com.bioparque.data.HabitatRepository;
 import arg.com.bioparque.data.ItinerarioRepository;
 import arg.com.bioparque.data.ItinerarioZonaRepository;
 import arg.com.bioparque.data.PersonaRepository;
+import arg.com.bioparque.data.RolRepository;
+import arg.com.bioparque.data.UsuarioRepository;
 import arg.com.bioparque.data.ZonaRepository;
 import arg.com.bioparque.domain.CuidadorEspecie;
 import arg.com.bioparque.domain.Especie;
@@ -17,7 +19,11 @@ import arg.com.bioparque.domain.Habitat;
 import arg.com.bioparque.domain.Itinerario;
 import arg.com.bioparque.domain.ItinerarioZona;
 import arg.com.bioparque.domain.Persona;
+import arg.com.bioparque.domain.Rol;
+import arg.com.bioparque.domain.Usuario;
 import arg.com.bioparque.domain.Zona;
+import arg.com.bioparque.util.EncriptPassword;
+import arg.com.bioparque.util.Roles;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -61,11 +67,15 @@ public class ControladorInicio {
 
     @Autowired
     private EspecieHabitatRepository especieHabitatRepository;
+    
+    @Autowired
+    private RolRepository rolRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    
     @GetMapping("/")
     public String inicio(Model model, @AuthenticationPrincipal User user) {
-        log.info("- Ejecutando el controlador String MVC");
-        log.info("- Usuario que hizo login: " + user);
 
         Persona persona = personaRepository.findByUserName(user.getUsername());
         model.addAttribute("persona", persona);
@@ -93,6 +103,14 @@ public class ControladorInicio {
 
         Especie especie = new Especie();
         model.addAttribute("especie", especie);
+        
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_ADMIN");
+        roles.add("ROLE_CUIDADOR");
+        roles.add("ROLE_GUIA");
+       
+        model.addAttribute("roles", roles);
+        
         return "index";
     }
 
@@ -187,7 +205,7 @@ public class ControladorInicio {
     public String verPersona(Persona persona, Model model) {
         persona = personaRepository.findById(persona.getIdPersona()).orElse(null);
         model.addAttribute("persona", persona);
-        if (persona.getRol().equals("cuidador")) {
+        if (persona.getRol().equals("ROLE_CUIDADOR")) {
             List<CuidadorEspecie> cuidadorEspecies = cuidadorEspecieRepository.findByPersona(persona);
             model.addAttribute("cuidadorEspecies", cuidadorEspecies);
             List<Especie> especies = especieRepository.findAll();
@@ -196,7 +214,7 @@ public class ControladorInicio {
             cuidadorEspecie.setPersona(persona);
             model.addAttribute("cuidadorEspecie", cuidadorEspecie);
             return "adminModificarCuidadorEspecie";
-        } else if (persona.getRol().equals("guia")) {
+        } else if (persona.getRol().equals("ROLE_GUIA")) {
             List<GuiaItinerario> guiaItinerarios = guiaItinerarioRepository.findByPersona(persona);
             model.addAttribute("guiaItinerarios", guiaItinerarios);
             GuiaItinerario guiaItinerario = new GuiaItinerario();
@@ -220,6 +238,22 @@ public class ControladorInicio {
             return "modificarPersona";
         }
         personaRepository.save(persona);
+        
+        EncriptPassword encriptPassword = new EncriptPassword();
+        String passwordEncriptada = encriptPassword.encriptar(persona.getPassword());
+        
+        Usuario usuario = new Usuario();
+        usuario.setUsername(persona.getUserName());
+        usuario.setPassword(passwordEncriptada);
+        usuario = usuarioRepository.save(usuario);
+        
+        Rol rol = new Rol();
+        rol.setIdUsuario(usuario.getIdUsuario());
+        rol.setNombre(persona.getRol());
+        
+        rolRepository.save(rol);
+        
+        
         return "redirect:/";
     }
 

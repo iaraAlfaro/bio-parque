@@ -52,18 +52,18 @@
                     <div class="col-md-3">
                         <div class="card text-center bg-danger text-white mb-3">
                             <div class="card-body">
-                                <h3 th:text="#{persona.fecha-ingreso}">Fecha Ingreso</h3>
-                                <h4 class="display-4">
-                                    prueba
-                                </h4>
+                                <h3 class="display-5">
+                                    <i class="fas fa-user"></i> Cuidadore
+                                </h3>
+                                <h4 th:text="${persona.nombre}">Cuidadore</h4>
                             </div>                            
                         </div>
                         <div class="card text-center bg-success text-white mb-3">
                             <div class="card-body">
-                                <h3 th:text="#{persona.telefono}">Telefono</h3>
-                                <h4 class="display-4">
-                                    <i class="fas fa-users"></i> prueba
-                                </h4>
+                                <h3 class="display-5">
+                                    <i class="fas fa-clock"></i> Fecha
+                                </h3>
+                                <h6 th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}">Fecha</h6>
                             </div>
                         </div>
                     </div>
