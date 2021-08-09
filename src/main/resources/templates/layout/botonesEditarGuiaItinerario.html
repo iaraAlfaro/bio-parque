@@ -7,12 +7,12 @@
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <section th:fragment="botonesEditar">
+        <section th:fragment="botonesEditarGuiaItinerario">
             <div id="actions" class="py-4 mb-4 bg-light">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3">
-                            <a th:href="@{/verPersona(idPersona=${cuidadorEspecie.persona.idPersona})}" class="btn btn-ligth btn-block">
+                            <a th:href="@{/verPersona(idPersona=${guiaItinerario.persona.idPersona})}" class="btn btn-ligth btn-block">
                                 <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]
                             </a>
                         </div>

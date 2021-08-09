@@ -21,32 +21,6 @@
                               method="POST" class="was-validated">
                             <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
                             <div class="modal-body">
-                                <!--div class="form-group">
-                                    <label for="duracion" th:text="#{itinerario.duracion}">Duración</label>
-                                    <input type="text" class="form-control" name="itinerario.duracion" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="longitud" th:text="#{itinerario.longitud}">Longitud</label>
-                                    <input type="text" class="form-control" name="itinerario.longitud" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="maxVisitantes" th:text="#{itinerario.max-visitantes}">Max Visitantes</label>
-                                    <input type="text" class="form-control" name="itinerario.maxVisitantes" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="numEspecies" th:text="#{itinerario.num-especies}">Num Especies</label>
-                                    <input type="text" class="form-control" name="itinerario.numEspecies" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="horario" th:text="#{itinerario.horario}">Horario</label>
-                                    <input type="text" class="form-control" name="itinerario.horario" required="true">
-                                </div>
-                                <h3>Zonas:</h3>
-                                <div th:each="zona : ${zonas}">
-                                    <input th:field="*{itinerario.zonas}" type="checkbox"
-                                           th:value="${zona.idZona}"/>
-                                    <span th:text="${zona.nombre}">Zona</span><br/>
-                                </div-->
                                 <label for="itinerarios" th:text="#{itinerarios}">Itinerarios: </label>
                                 <select th:field="*{itinerario}">
                                     <option value=""> -Seleccionar- </option>

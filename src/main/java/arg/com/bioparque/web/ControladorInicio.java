@@ -98,8 +98,10 @@ public class ControladorInicio {
 
     @GetMapping("/eliminarCuidadorEspecie")
     public String eliminarCuidadorEspecie(CuidadorEspecie cuidadorEspecie) {
+        cuidadorEspecie = cuidadorEspecieRepository.findById(cuidadorEspecie.getIdCuidadorEspecie()).orElse(null);
+        Long id = cuidadorEspecie.getPersona().getIdPersona();
         cuidadorEspecieRepository.delete(cuidadorEspecie);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + id;
     }
 
     @GetMapping("/editarCuidadorEspecie/{idCuidadorEspecie}")
@@ -129,12 +131,10 @@ public class ControladorInicio {
             System.out.println(errores.getAllErrors());
             return "adminModificarCuidadorEspecie";
         }
-        //Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
         Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
-        //cuidadorEspecie.setEspecie(especie);
         cuidadorEspecie.setPersona(persona);
         cuidadorEspecieRepository.save(cuidadorEspecie);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
     @PostMapping("/adminCuidadorEspecieEditado")
@@ -145,8 +145,6 @@ public class ControladorInicio {
             return "adminModificarCuidadorEspecie";
         }
         
-        
-        
         List<Habitat> habitats = new ArrayList<>();
         for (Habitat habitat : cuidadorEspecie.getEspecie().getHabitats()) {
             habitats.add(habitat);
@@ -156,7 +154,7 @@ public class ControladorInicio {
         Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
         Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
         cuidadorEspecie.setPersona(persona);
-//     
+        
         if (habitats != null || !habitats.isEmpty()) {
             List<EspecieHabitat> especieHabitats = especieHabitatRepository.findAllByEspecie(especie);
             especieHabitatRepository.deleteAll(especieHabitats);
@@ -169,7 +167,7 @@ public class ControladorInicio {
         }
 
         cuidadorEspecieRepository.save(cuidadorEspecie);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
     @GetMapping("/eliminarPersona")
@@ -227,8 +225,10 @@ public class ControladorInicio {
 
     @GetMapping("/eliminarGuiaItinerario")
     public String eliminarGuiaItinerario(GuiaItinerario guiaItinerario) {
+        guiaItinerario = guiaItinerarioRepository.findById(guiaItinerario.getIdGuiaItinerario()).orElse(null);
+        Long id = guiaItinerario.getPersona().getIdPersona();
         guiaItinerarioRepository.delete(guiaItinerario);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + id;
     }
 
     @GetMapping("/editarGuiaItinerario/{idGuiaItinerario}")
@@ -248,10 +248,9 @@ public class ControladorInicio {
             return "adminModificarGuia";
         }
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
-        //Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
         guiaItinerario.setPersona(persona);
         guiaItinerarioRepository.save(guiaItinerario);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
     @PostMapping("/adminGuiaItinerarioEditado")
@@ -266,11 +265,10 @@ public class ControladorInicio {
             zonas.add(zona);
         }
         guiaItinerario.getItinerario().getZonas().clear();
-
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
         Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
         guiaItinerario.setPersona(persona);
-//     
+        
         if (zonas != null || !zonas.isEmpty()) {
             List<ItinerarioZona> ItinerarioZonas = itinerarioZonaRepository.findAllByItinerario(itinerario);
             itinerarioZonaRepository.deleteAll(ItinerarioZonas);
@@ -281,10 +279,9 @@ public class ControladorInicio {
                 itinerarioZonaRepository.save(itinerarioZona);
             }
         }
-
         guiaItinerarioRepository.save(guiaItinerario);
-
-        return "redirect:/";
+        
+        return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
     @PostMapping("/guardarGuiaItinerario")
@@ -295,28 +292,10 @@ public class ControladorInicio {
             System.out.println(errores.getAllErrors());
             return "adminModificarCuidadorEspecie";
         }
-
-        /*List<Zona> zonas = new ArrayList<>();
-        for(Zona zona : guiaItinerario.getItinerario().getZonas()){
-            zonas.add(zona);
-        }
-        guiaItinerario.getItinerario().getZonas().clear();
-        
-        Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());*/
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
-
-        /*for (Zona zona : zonas) {
-            ItinerarioZona itinerarioZona = new ItinerarioZona();
-            itinerarioZona.setItinerario(itinerario);
-            itinerarioZona.setZona(zona);
-            itinerarioZonaRepository.save(itinerarioZona);
-        }
-
-        guiaItinerario.setItinerario(itinerario);*/
         guiaItinerario.setPersona(persona);
-
         guiaItinerarioRepository.save(guiaItinerario);
-        return "redirect:/";
+        return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
     @PostMapping("/guardarEspecie")
@@ -330,7 +309,6 @@ public class ControladorInicio {
             habitats.add(habitat);
         }
         especie.getHabitats().clear();
-
         especieRepository.save(especie);
 
         for (Habitat habitat : habitats) {

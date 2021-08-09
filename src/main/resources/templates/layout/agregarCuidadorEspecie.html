@@ -20,20 +20,6 @@
                         <form th:action="@{/guardarCuidadorEspecie}" th:object="${cuidadorEspecie}"
                               method="POST" class="was-validated">
                             <input type="hidden" name="persona.idPersona" th:field="*{persona.idPersona}"/>
-                            <!--div class="modal-body">
-                                <div class="form-group">
-                                    <label for="nombre" th:text="#{especie.nombre}">Nombre</label>
-                                    <input type="text" class="form-control" name="especie.nombre" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nombreCientifico" th:text="#{especie.nombre-cientifico}">Direccion</label>
-                                    <input type="text" class="form-control" name="especie.nombreCientifico" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="descripcion" th:text="#{especie.descripcion}">Telefono</label>
-                                    <input type="text" class="form-control" name="especie.descripcion" required="true">
-                                </div>
-                            </div-->
                             <div class="modal-body">
                                 <label for="especies" th:text="#{especies}">Especies: </label>
                                 <select th:field="*{especie}">
