@@ -67,13 +67,13 @@ public class ControladorInicio {
 
     @Autowired
     private EspecieHabitatRepository especieHabitatRepository;
-    
+
     @Autowired
     private RolRepository rolRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
+
     @GetMapping("/")
     public String inicio(Model model, @AuthenticationPrincipal User user) {
 
@@ -103,14 +103,14 @@ public class ControladorInicio {
 
         Especie especie = new Especie();
         model.addAttribute("especie", especie);
-        
+
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_ADMIN");
         roles.add("ROLE_CUIDADOR");
         roles.add("ROLE_GUIA");
-       
+
         model.addAttribute("roles", roles);
-        
+
         return "index";
     }
 
@@ -162,7 +162,7 @@ public class ControladorInicio {
         if (errores.hasErrors()) {
             return "adminModificarCuidadorEspecie";
         }
-        
+
         List<Habitat> habitats = new ArrayList<>();
         for (Habitat habitat : cuidadorEspecie.getEspecie().getHabitats()) {
             habitats.add(habitat);
@@ -172,7 +172,7 @@ public class ControladorInicio {
         Persona persona = personaRepository.findById(cuidadorEspecie.getPersona().getIdPersona()).orElse(null);
         Especie especie = especieRepository.save(cuidadorEspecie.getEspecie());
         cuidadorEspecie.setPersona(persona);
-        
+
         if (habitats != null || !habitats.isEmpty()) {
             List<EspecieHabitat> especieHabitats = especieHabitatRepository.findAllByEspecie(especie);
             especieHabitatRepository.deleteAll(especieHabitats);
@@ -191,10 +191,10 @@ public class ControladorInicio {
     @GetMapping("/eliminarPersona")
     public String eliminarPersona(Persona persona) {
         persona = personaRepository.findById(persona.getIdPersona()).orElse(null);
-        Usuario usuario =  usuarioRepository.findByUsername(persona.getUserName());
+        Usuario usuario = usuarioRepository.findByUsername(persona.getUserName());
         Rol rol = rolRepository.findByIdUsuario(usuario.getIdUsuario());
         rolRepository.delete(rol);
-        
+
         usuarioRepository.delete(usuario);
         personaRepository.delete(persona);
         return "redirect:/";
@@ -215,11 +215,17 @@ public class ControladorInicio {
             List<CuidadorEspecie> cuidadorEspecies = cuidadorEspecieRepository.findByPersona(persona);
             model.addAttribute("cuidadorEspecies", cuidadorEspecies);
             List<Especie> especies = especieRepository.findAll();
-            for(int i = 0; i < especies.size(); i++){
-                if(especies.get(i).getIdEspecie() == 11){
+            for (int i = 0; i < especies.size(); i++) {
+                if (especies.get(i).getIdEspecie() == 11) {
                     especies.remove(i);
                 }
+                
             }
+            List<Especie> especiesCuidador = new ArrayList<>();
+            for(CuidadorEspecie cuidadorEsp : cuidadorEspecies){
+                especiesCuidador.add(cuidadorEsp.getEspecie());
+            }
+            especies.removeAll(especiesCuidador);
             model.addAttribute("especies", especies);
             CuidadorEspecie cuidadorEspecie = new CuidadorEspecie();
             cuidadorEspecie.setPersona(persona);
@@ -236,11 +242,16 @@ public class ControladorInicio {
             List<Zona> zonas = zonaRepository.findAll();
             model.addAttribute("zonas", zonas);
             List<Itinerario> itinerarios = itinerarioRepository.findAll();
-            for(int i = 0; i < itinerarios.size(); i++){
-                if(itinerarios.get(i).getIdItinerario() == 11){
+            for (int i = 0; i < itinerarios.size(); i++) {
+                if (itinerarios.get(i).getIdItinerario() == 11) {
                     itinerarios.remove(i);
                 }
             }
+            List<Itinerario> itinerarioGuia = new ArrayList<>();
+            for(GuiaItinerario guiaIti : guiaItinerarios){
+                itinerarioGuia.add(guiaIti.getItinerario());
+            }
+            itinerarios.removeAll(itinerarioGuia);
             model.addAttribute("itinerarios", itinerarios);
             return "adminModificarGuia";
         }
@@ -254,23 +265,23 @@ public class ControladorInicio {
             return "modificarPersona";
         }
         personaRepository.save(persona);
-        
+
         EncriptPassword encriptPassword = new EncriptPassword();
         String passwordEncriptada = encriptPassword.encriptar(persona.getPassword());
-        
+
         Usuario usuario = new Usuario();
         usuario.setUsername(persona.getUserName());
         usuario.setPassword(passwordEncriptada);
         usuario = usuarioRepository.save(usuario);
-        
+
         Rol rol = new Rol();
         rol.setIdUsuario(usuario.getIdUsuario());
         rol.setNombre(persona.getRol());
-        
+
         rolRepository.save(rol);
         return "redirect:/";
     }
-    
+
     @PostMapping("/guardarPersonaEditada")
     public String guardarPersonaEditada(@Valid Persona persona, Errors errores) {
         if (errores.hasErrors()) {
@@ -282,15 +293,15 @@ public class ControladorInicio {
         persona.setUserName(personaOriginal.getUserName());
         persona.setRol(personaOriginal.getRol());
         personaRepository.save(persona);
-        
+
         EncriptPassword encriptPassword = new EncriptPassword();
         String passwordEncriptada = encriptPassword.encriptar(persona.getPassword());
-        
+
         Usuario usuario = new Usuario();
         usuario = usuarioRepository.findByUsername(persona.getUserName());
         usuario.setPassword(passwordEncriptada);
         usuario = usuarioRepository.save(usuario);
-                
+
         return "redirect:/";
     }
 
@@ -339,7 +350,7 @@ public class ControladorInicio {
         Persona persona = personaRepository.findById(guiaItinerario.getPersona().getIdPersona()).orElse(null);
         Itinerario itinerario = itinerarioRepository.save(guiaItinerario.getItinerario());
         guiaItinerario.setPersona(persona);
-        
+
         if (zonas != null || !zonas.isEmpty()) {
             List<ItinerarioZona> ItinerarioZonas = itinerarioZonaRepository.findAllByItinerario(itinerario);
             itinerarioZonaRepository.deleteAll(ItinerarioZonas);
@@ -351,7 +362,7 @@ public class ControladorInicio {
             }
         }
         guiaItinerarioRepository.save(guiaItinerario);
-        
+
         return "redirect:/verPersona?idPersona=" + persona.getIdPersona();
     }
 
@@ -412,7 +423,7 @@ public class ControladorInicio {
         }
         return "redirect:/";
     }
-    
+
     @PostMapping("/guardarZona")
     public String guardarZona(@Valid Zona zona, Errors errores) {
         if (errores.hasErrors()) {
@@ -424,7 +435,7 @@ public class ControladorInicio {
         zonaRepository.save(zona);
         return "redirect:/";
     }
-    
+
     @PostMapping("/guardarHabitat")
     public String guardarZona(@Valid Habitat habitat, Errors errores) {
         if (errores.hasErrors()) {
