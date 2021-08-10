@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface RolRepository extends JpaRepository<Rol, Long>{
     //void deleteAllByIdUsuario(List<Long> idUsuarios);
     List<Rol> findAllByIdUsuario(Long idUsuario);
+    Rol findByIdUsuario(Long idUsuario);
 }

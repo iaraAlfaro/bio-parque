@@ -192,8 +192,8 @@ public class ControladorInicio {
     public String eliminarPersona(Persona persona) {
         persona = personaRepository.findById(persona.getIdPersona()).orElse(null);
         Usuario usuario =  usuarioRepository.findByUsername(persona.getUserName());
-        List<Rol> roles = rolRepository.findAllByIdUsuario(usuario.getIdUsuario());
-        rolRepository.deleteAll(roles);
+        Rol rol = rolRepository.findByIdUsuario(usuario.getIdUsuario());
+        rolRepository.delete(rol);
         
         usuarioRepository.delete(usuario);
         personaRepository.delete(persona);
