@@ -24,4 +24,7 @@ public class Habitat implements Serializable{
     @OneToMany(mappedBy = "habitat")
     private List<EspecieHabitat> especieHabitats;
     
+    @ManyToOne
+    @JoinColumn(name="id_especie", referencedColumnName="id_especie")
+    private Especie especie;
 }

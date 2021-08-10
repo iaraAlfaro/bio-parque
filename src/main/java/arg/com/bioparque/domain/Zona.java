@@ -21,6 +21,7 @@ public class Zona implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_zona")
     private Long idZona;
     
@@ -30,7 +31,8 @@ public class Zona implements Serializable{
     
     @OneToMany(mappedBy = "zona")
     private List<ItinerarioZona> itinerarioZonas;
-//    @ManyToOne
-//    @JoinColumn(name="id_itinerario", referencedColumnName="id_itinerario")
-//    private Itinerario itinerario;
+    
+    @ManyToOne
+    @JoinColumn(name="id_itinerario", referencedColumnName="id_itinerario")
+    private Itinerario itinerario;
 }

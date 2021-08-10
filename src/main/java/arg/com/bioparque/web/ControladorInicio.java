@@ -190,6 +190,12 @@ public class ControladorInicio {
 
     @GetMapping("/eliminarPersona")
     public String eliminarPersona(Persona persona) {
+        persona = personaRepository.findById(persona.getIdPersona()).orElse(null);
+        Usuario usuario =  usuarioRepository.findByUsername(persona.getUserName());
+        List<Rol> roles = rolRepository.findAllByIdUsuario(usuario.getIdUsuario());
+        rolRepository.deleteAll(roles);
+        
+        usuarioRepository.delete(usuario);
         personaRepository.delete(persona);
         return "redirect:/";
     }
@@ -261,7 +267,10 @@ public class ControladorInicio {
             System.out.println(errores.getAllErrors());
             return "modificarPersona";
         }
-        
+        Persona personaOriginal = new Persona();
+        personaOriginal = personaRepository.findById(persona.getIdPersona()).orElse(null);
+        persona.setUserName(personaOriginal.getUserName());
+        persona.setRol(personaOriginal.getRol());
         personaRepository.save(persona);
         
         EncriptPassword encriptPassword = new EncriptPassword();
@@ -391,6 +400,30 @@ public class ControladorInicio {
             itinerarioZona.setZona(zona);
             itinerarioZonaRepository.save(itinerarioZona);
         }
+        return "redirect:/";
+    }
+    
+    @PostMapping("/guardarZona")
+    public String guardarZona(@Valid Zona zona, Errors errores) {
+        if (errores.hasErrors()) {
+            System.out.println(errores.getAllErrors());
+            return "redirect:/";
+        }
+        Itinerario itinerario = itinerarioRepository.findById(111L).orElse(null);
+        zona.setItinerario(itinerario);
+        zonaRepository.save(zona);
+        return "redirect:/";
+    }
+    
+    @PostMapping("/guardarHabitat")
+    public String guardarZona(@Valid Habitat habitat, Errors errores) {
+        if (errores.hasErrors()) {
+            System.out.println(errores.getAllErrors());
+            return "redirect:/";
+        }
+        Especie especie = especieRepository.findById(11L).orElse(null);
+        habitat.setEspecie(especie);
+        habitatRepository.save(habitat);
         return "redirect:/";
     }
 }
