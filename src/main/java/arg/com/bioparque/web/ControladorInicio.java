@@ -215,6 +215,11 @@ public class ControladorInicio {
             List<CuidadorEspecie> cuidadorEspecies = cuidadorEspecieRepository.findByPersona(persona);
             model.addAttribute("cuidadorEspecies", cuidadorEspecies);
             List<Especie> especies = especieRepository.findAll();
+            for(int i = 0; i < especies.size(); i++){
+                if(especies.get(i).getIdEspecie() == 11){
+                    especies.remove(i);
+                }
+            }
             model.addAttribute("especies", especies);
             CuidadorEspecie cuidadorEspecie = new CuidadorEspecie();
             cuidadorEspecie.setPersona(persona);
@@ -231,6 +236,11 @@ public class ControladorInicio {
             List<Zona> zonas = zonaRepository.findAll();
             model.addAttribute("zonas", zonas);
             List<Itinerario> itinerarios = itinerarioRepository.findAll();
+            for(int i = 0; i < itinerarios.size(); i++){
+                if(itinerarios.get(i).getIdItinerario() == 11){
+                    itinerarios.remove(i);
+                }
+            }
             model.addAttribute("itinerarios", itinerarios);
             return "adminModificarGuia";
         }
