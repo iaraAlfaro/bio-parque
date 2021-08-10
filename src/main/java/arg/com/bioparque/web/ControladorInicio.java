@@ -252,8 +252,26 @@ public class ControladorInicio {
         rol.setNombre(persona.getRol());
         
         rolRepository.save(rol);
+        return "redirect:/";
+    }
+    
+    @PostMapping("/guardarPersonaEditada")
+    public String guardarPersonaEditada(@Valid Persona persona, Errors errores) {
+        if (errores.hasErrors()) {
+            System.out.println(errores.getAllErrors());
+            return "modificarPersona";
+        }
         
+        personaRepository.save(persona);
         
+        EncriptPassword encriptPassword = new EncriptPassword();
+        String passwordEncriptada = encriptPassword.encriptar(persona.getPassword());
+        
+        Usuario usuario = new Usuario();
+        usuario = usuarioRepository.findByUsername(persona.getUserName());
+        usuario.setPassword(passwordEncriptada);
+        usuario = usuarioRepository.save(usuario);
+                
         return "redirect:/";
     }
 
